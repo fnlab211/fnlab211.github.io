@@ -1,23 +1,37 @@
 const todoData = {
-    '2025-06-08': [
+    '2025-06-16': [
         { text: '아침 운동하기', checked: false },
         { text: '책 읽기', checked: false },
         { text: '점심 약속', checked: false }
     ],
-    '2025-06-09': [
+    '2025-06-17': [
         { text: '업무 보고', checked: false },
         { text: '저녁 산책', checked: false }
     ],
-    '2025-06-10': [
+    '2025-06-18': [
         { text: '청소', checked: false },
         { text: '독서', checked: false },
         { text: '요리 연습', checked: false }
     ],
-    '2025-06-11': [
+    '2025-06-19': [
         { text: '장보기', checked: false },
         { text: '운동', checked: false }
     ],
-    '2025-06-12': [
+    '2025-06-20': [
+        { text: '회의 준비', checked: false },
+        { text: '친구 만나기', checked: false }
+    ],
+    '2025-06-23': [
+        { text: '아침 운동하기', checked: false },
+        { text: '책 읽기', checked: false },
+        { text: '점심 약속', checked: false }
+    ],
+    '2025-06-25': [
+        { text: '청소', checked: false },
+        { text: '독서', checked: false },
+        { text: '요리 연습', checked: false }
+    ],
+    '2025-06-27': [
         { text: '회의 준비', checked: false },
         { text: '친구 만나기', checked: false }
     ]

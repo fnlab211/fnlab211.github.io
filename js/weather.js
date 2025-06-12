@@ -46,7 +46,6 @@ function updateWeatherTitle(cityName) {
 }
 
 function getLocation() {
-    console.log('getLocation');
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             position => {

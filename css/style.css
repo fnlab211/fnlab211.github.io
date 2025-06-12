@@ -163,6 +163,20 @@ h2 {
     height: 80px;
 }
 
+.weather-info {
+    width: 100%;
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #707070;
+}
+
+.weather-info div {
+    text-align: left;
+    width: fit-content;
+    color: #212121;
+}
+
 .weather-info div:nth-child(1) {
     font-size: 0.9rem;
     font-weight: 500;

@@ -14,6 +14,7 @@ async function loadPage(page) {
     if (page === 'home') {
         const weatherHtml = await (await fetch('components/weather.html')).text();
         mainContent.insertAdjacentHTML('beforeend', weatherHtml);
+        if (window.updateWeatherTitle) window.updateWeatherTitle(currentCity);
         if (window.fetchWeather) window.fetchWeather();
 
         const todoListHtml = await (await fetch('components/todo-list.html')).text();

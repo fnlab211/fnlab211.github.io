@@ -5,7 +5,7 @@ const API_BASE_URL = '/api';
 function showError(message) {
     console.error(message);
     document.getElementById('weather-info-group').innerHTML = `
-        <div style="color: #ff4444; text-align: center; padding: 20px;">
+        <div style="color: #ff4444; text-align: center; padding: 8px;">
             ${message}
         </div>
     `;
@@ -46,6 +46,7 @@ function updateWeatherTitle(cityName) {
 }
 
 function getLocation() {
+    console.log('getLocation');
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             position => {

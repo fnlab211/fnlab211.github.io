@@ -1,0 +1,42 @@
+<section>
+    <h2>템플릿 상세</h2>
+    <form id="template-form" class="template-form" autocomplete="off">
+        <div class="template-group">
+            <label for="template-type" class="template-label">구분</label>
+            <select id="template-type" class="template-select">
+                <option value="situation">상황</option>
+                <option value="weather">날씨</option>
+            </select>
+        </div>
+        <div id="situation-title-group" class="template-group">
+            <label for="template-title" class="template-label">상황명</label>
+            <input id="template-title" type="text" class="template-input" placeholder="예: 비가 올 때">
+        </div>
+        <div id="weather-type-group" class="template-group" style="display:none;">
+            <label for="weather-type" class="template-label">날씨 유형</label>
+            <select id="weather-type" class="template-select">
+                <option value="800">맑음</option>
+                <option value="801">구름 조금</option>
+                <option value="802">구름 많음</option>
+                <option value="803">흐림</option>
+                <option value="500">비</option>
+                <option value="600">눈</option>
+                <option value="701">안개</option>
+                <option value="200">천둥번개</option>
+            </select>
+        </div>
+        <div class="template-group">
+            <label class="template-label">To Do List</label>
+            <ul id="todo-list" class="template-todo-list editable"></ul>
+            <div class="template-todo-add-group">
+                <input id="new-todo-input" type="text" class="template-todo-add-input" placeholder="할 일을 입력하세요">
+                <button type="button" id="add-todo-btn" class="template-todo-add-btn">추가</button>
+            </div>
+        </div>
+    </form>
+    <div class="template-action-group">
+        <button type="button" id="template-delete-btn" class="template-delete-btn" style="display:none;">삭제</button>
+        <button type="button" id="template-cancel-btn" class="template-list-btn">취소</button>
+        <button type="button" id="template-action-btn" class="template-action-btn">등록</button>
+    </div>
+</section>

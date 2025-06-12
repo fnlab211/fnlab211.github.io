@@ -54,11 +54,11 @@ function getLocation() {
                     lon: position.coords.longitude
                 };
                 // 좌표로 도시 이름 가져오기
-                fetch(`https://api.openweathermap.org/geo/1.0/reverse?lat=${currentCoord.lat}&lon=${currentCoord.lon}&limit=1&appid=${API_KEY}`)
+                fetch(`${API_BASE_URL}/weather?lat=${currentCoord.lat}&lon=${currentCoord.lon}`)
                     .then(res => res.json())
                     .then(data => {
-                        if (data && data[0]) {
-                            currentCity = data[0].name;
+                        if (data && data.name) {
+                            currentCity = data.name;
                             updateWeatherTitle(currentCity);
                             fetchWeather();
                         }
@@ -87,54 +87,54 @@ function getLocation() {
     }
 }
 
-function fetchWeather() {
+async function fetchWeather() {
     const weatherDiv = document.getElementById('weather-info');
     const weatherIcon = document.getElementById('weather-icon');
     if (!weatherDiv) return;
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${currentCity}&appid=${API_KEY}&lang=kr&units=metric`)
-        .then(res => res.json())
-        .then(data => {
+
+    try {
+        const data = await getCurrentWeather();
+        if (data) {
             weatherDiv.innerHTML = `<div>${data.weather[0].description}</div><div>${Math.round(data.main.temp)}°C</div>`;
             weatherIcon.innerHTML = `<img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt="weather icon">`;
-        });
+        }
+    } catch (error) {
+        showError('날씨 정보를 불러올 수 없습니다.');
+    }
 }
 
-function fetchForecast(dateStr) {
+async function fetchForecast(dateStr) {
     const group = document.getElementById('weather-forecast-group');
     if (!group) return;
     group.innerHTML = '';
 
-    fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${currentCoord.lat}&lon=${currentCoord.lon}&appid=${API_KEY}&lang=kr&units=metric`)
-    .then(res => res.json())
-    .then(data => {
-        // dateStr: 'YYYY-MM-DD'와 일치하는 데이터만 추출
-        const list = data.list.filter(item => item.dt_txt.startsWith(dateStr));
-        // 특정 시간대만 추출
-        const hours = ['06:00:00', '09:00:00', '12:00:00', '15:00:00', '18:00:00'];
-        const filtered = hours.map(hh => list.find(item => item.dt_txt.endsWith(hh))).filter(Boolean);
-        if (filtered.length === 0) {
-            group.innerHTML += '<span>예보 데이터가 없습니다.</span>';
-            return;
+    try {
+        const data = await getWeatherForecast();
+        if (data) {
+            // dateStr: 'YYYY-MM-DD'와 일치하는 데이터만 추출
+            const list = data.list.filter(item => item.dt_txt.startsWith(dateStr));
+            // 특정 시간대만 추출
+            const hours = ['06:00:00', '09:00:00', '12:00:00', '15:00:00', '18:00:00'];
+            const filtered = hours.map(hh => list.find(item => item.dt_txt.endsWith(hh))).filter(Boolean);
+            
+            if (filtered.length === 0) {
+                group.innerHTML += '<span>예보 데이터가 없습니다.</span>';
+                return;
+            }
+
+            const html = filtered.map(f => `
+                <div class="weather-forecast-item">
+                    <div class="weather-forecast-time">${f.dt_txt.slice(11, 16)}</div>
+                    <div class="weather-forecast-icon"><img src='https://openweathermap.org/img/wn/${f.weather[0].icon}.png' alt="icon"></div>
+                    <div class="weather-forecast-temp">${Math.round(f.main.temp)}°C</div>
+                </div>
+            `).join('');
+            group.innerHTML += `<div class="weather-forecast-list">${html}</div>`;
         }
-        const html = filtered.map(f => `
-            <div class="weather-forecast-item">
-                <div class="weather-forecast-time">${f.dt_txt.slice(11, 16)}</div>
-                <div class="weather-forecast-icon"><img src='https://openweathermap.org/img/wn/${f.weather[0].icon}.png' alt="icon"></div>
-                <div class="weather-forecast-temp">${Math.round(f.main.temp)}°C</div>
-            </div>
-        `).join('');
-        group.innerHTML += `<div class="weather-forecast-list">${html}</div>`;
-    })
-    .catch(() => {
+    } catch (error) {
         group.innerHTML += '<span>날씨 예보를 불러올 수 없습니다.</span>';
-    });
+    }
 }
-
-// 페이지 로드 시 위치 정보 가져오기
-document.addEventListener('DOMContentLoaded', getLocation);
-
-window.fetchWeather = fetchWeather;
-window.fetchForecast = fetchForecast;
 
 // 현재 날씨 정보 가져오기
 async function getCurrentWeather() {
@@ -165,3 +165,9 @@ async function getWeatherForecast() {
         return null;
     }
 }
+
+// 페이지 로드 시 위치 정보 가져오기
+document.addEventListener('DOMContentLoaded', getLocation);
+
+window.fetchWeather = fetchWeather;
+window.fetchForecast = fetchForecast;
